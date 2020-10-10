@@ -58,7 +58,7 @@ async function discoverInstalls(root: string, beta: boolean): Promise<Install[]>
 
 async function select(install: Install): Promise<void> {
   if (!fs.existsSync(install.path)) {
-    throw Error(`Cannot select Xcode at <${install.path}>: the path does not exist. `);
+    throw Error(`Cannot select Xcode at <${install.path}>: the path does not exist. `)
   }
   await exec.exec('sudo', ['xcode-select', '-s', install.path])
 }
@@ -74,13 +74,13 @@ async function run(): Promise<void> {
     const installs = await discoverInstalls('/Applications', beta)
     core.info(`Found ${installs.length} installs`)
 
-    const install = matchInstall(installs, version);
+    const install = matchInstall(installs, version)
     if (install == null) {
       throw Error(`Could not match Xcode version ${version} in available versions <${installs.map(i => i.shortVersion)}>.`)
     }
 
     core.info(`Selecting Xcode ${install.shortVersion} at ${install.path}`)
-    await select(install);
+    await select(install)
   } catch (error) {
     core.setFailed(error.message)
   }
