@@ -1,103 +1,54 @@
-<p align="center">
-  <a href="https://github.com/actions/typescript-action/actions"><img alt="typescript-action status" src="https://github.com/actions/typescript-action/workflows/build-test/badge.svg"></a>
-</p>
+# xcode-select
 
-# Create a JavaScript Action using TypeScript
+This GitHub Action is a wrapper around `xcode-select` and will let you easily pick a specific Xcode version to be used in your workflow.
 
-Use this template to bootstrap the creation of a TypeScript action.:rocket:
+## Usage
 
-This template includes compilation support, tests, a validation workflow, publishing, and versioning guidance.  
+The most basic usage will be without any inputs, which will default to `version: "latest"`, which will result in the latest stable Xcode being selected.
 
-If you are new, there's also a simpler introduction.  See the [Hello World JavaScript Action](https://github.com/actions/hello-world-javascript-action)
-
-## Create an action from this template
-
-Click the `Use this Template` and provide the new repo details for your action
-
-## Code in Main
-
-Install the dependencies  
-```bash
-$ npm install
+```yml
+steps:
+  - uses: devbotsxyz/xcode-select@v1
 ```
 
-Build the typescript and package it for distribution
-```bash
-$ npm run build && npm run package
+If you want to pin a specific version, specify it with the `version` input.
+
+```yml
+steps:
+  - name: "Select Xcode 11.7"
+    uses: devbotsxyz/xcode-select@v1
+      with:
+        version: "11.7"
 ```
 
-Run the tests :heavy_check_mark:  
-```bash
-$ npm test
+If you are less specific with the version, this Action will pick the latest available release for that version. For example, now in October 2020, specifying `12` will give you `12.0.1` and specifying `11` will get you `11.7`
 
- PASS  ./index.test.js
-  ✓ throws invalid number (3ms)
-  ✓ wait 500 ms (504ms)
-  ✓ test runs (95ms)
+### Xcode Beta
 
-...
+You can set the `beta` input to `true` to request a beta release. For example to get the latest Beta in the Xcode 12 release, use the following:
+
+```yml
+steps:
+  - uses: devbotsxyz/xcode-select@v1
+    with:
+      version: "12"
+      beta: "true"
 ```
 
-## Change action.yml
+To get the latest available beta, which may not always exist, use the following:
 
-The action.yml contains defines the inputs and output for your action.
-
-Update the action.yml with your name, description, inputs and outputs for your action.
-
-See the [documentation](https://help.github.com/en/articles/metadata-syntax-for-github-actions)
-
-## Change the Code
-
-Most toolkit and CI/CD operations involve async operations so the action is run in an async function.
-
-```javascript
-import * as core from '@actions/core';
-...
-
-async function run() {
-  try { 
-      ...
-  } 
-  catch (error) {
-    core.setFailed(error.message);
-  }
-}
-
-run()
+```yml
+steps:
+  - uses: devbotsxyz/xcode-select@v1
+    with:
+      version: "latest"
+      beta: "true"
 ```
 
-See the [toolkit documentation](https://github.com/actions/toolkit/blob/master/README.md#packages) for the various packages.
+## License
 
-## Publish to a distribution branch
+This action is released under the [MIT License](LICENSE).
 
-Actions are run from GitHub repos so we will checkin the packed dist folder. 
+## Contributions
 
-Then run [ncc](https://github.com/zeit/ncc) and push the results:
-```bash
-$ npm run package
-$ git add dist
-$ git commit -a -m "prod dependencies"
-$ git push origin releases/v1
-```
-
-Note: We recommend using the `--license` option for ncc, which will create a license file for all of the production node modules used in your project.
-
-Your action is now published! :rocket: 
-
-See the [versioning documentation](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md)
-
-## Validate
-
-You can now validate the action by referencing `./` in a workflow in your repo (see [test.yml](.github/workflows/test.yml))
-
-```yaml
-uses: ./
-with:
-  milliseconds: 1000
-```
-
-See the [actions tab](https://github.com/actions/typescript-action/actions) for runs of this action! :rocket:
-
-## Usage:
-
-After testing you can [create a v1 tag](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md) to reference the stable and latest V1 action
+Contributions are welcome. One of the most impactful things you can do is to file issues for bugs and use-cases that were not throught of yet.
